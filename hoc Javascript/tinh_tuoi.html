@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Age</title>
+	<style>
+		body{
+			width: 750px;
+			margin:50px auto;
+		}
+		.clr{
+			clear: both;
+		}
+		.col span{
+			display: block;
+			margin-bottom: 0px;
+			font-weight: 900;
+			text-transform: uppercase;
+			text-decoration: underline;
+		}
+		input{
+			width: 220px;
+			height: 30px;
+			border: 1px solid #ccc;
+			padding: 0 10px;
+			margin-bottom: 15px;
+		}
+		label{
+			width: 100px;
+			display: inline-block;
+		}
+		#tinh{
+			background: #ccc;
+			height: 35px;
+			width: 200px;
+			border-radius: 7px;
+			text-align: center;
+			line-height: 35px;
+			cursor: pointer;
+			margin: 0 auto;
+		}
+		#warning{
+			color:red;
+			text-align: center;
+		}
+		.col{
+			width: 50%;
+			float: left;
+		}
+	</style>
+</head>
+<body>
+	<div class="col">
+		<span>Năm sinh:</span> <br />
+		<label>Ngày:</label>
+		<input id="ngaysinh" type="text" placeholder="ngày sinh" onkeypress="return isNumber(event)" value="2"> <br />
+		<label>Tháng:</label>
+		<input id="thangsinh" type="text" placeholder="tháng sinh" onkeypress="return isNumber(event)" value="2"> <br />
+		<label>Năm:</label>
+		<input id="namsinh" type="text" placeholder="năm sinh" onkeypress="return isNumber(event)" value="2016"> <br />
+	</div>
+	<div class="col">
+		<span>hiện tại:</span> <br />
+		<label>Ngày:</label>
+		<input id="ngayht" type="text" placeholder="ngày hiện tại" onkeypress="return isNumber(event)" value="2"> <br />
+		<label>Tháng:</label>
+		<input id="thanght" type="text" placeholder="tháng hiện tại" onkeypress="return isNumber(event)" value="2"> <br />
+		<label>Năm:</label>
+		<input id="namht" type="text" placeholder="năm hiện tại" onkeypress="return isNumber(event)" value="2047"> <br />
+	</div>
+	<div class="clr"></div>
+	<p id="warning"></p>
+	<p id="tinh">Tính</p>
+	<p id="console">
+		
+	</p>
+</body>
+	<script>
+		var ngaysinh = document.getElementById('ngaysinh');
+		var thangsinh = document.getElementById('thangsinh');
+		var namsinh = document.getElementById('namsinh');
+		var ngayht = document.getElementById('ngayht');
+		var thanght = document.getElementById('thanght');
+		var namht = document.getElementById('namht');
+
+		document.getElementById('tinh').addEventListener("click",function(){
+			xet_input_val();
+
+			var valngaysinh = parseFloat(ngaysinh.value);
+			var valngayht = parseFloat(ngayht.value);
+			var arrngay = [];
+
+			var valthangsinh = parseFloat(thangsinh.value);
+			var valthanght = parseFloat(thanght.value);
+			var arrthang = [];
+
+			var valnamsinh = parseFloat(namsinh.value);
+			var valnamht = parseFloat(namht.value);
+			var arr_ngay = [];
+
+			var $songaycuanam = 0;
+			var arr_thang_nam = [31,0,31,30,31,30,31,31,30,31,30,31];
+			/* Xet thang hien tai */
+			if(valthanght < valthangsinh){
+				// debugger;
+				var valngaysinh_old = valngaysinh;
+				var valngayht_old = valngayht;
+				valnamht_old = valnamht;
+				valnamht = valnamht - 1;
+				valthanght_old = valthanght;
+				valthanght = valthanght + 12;
+				var totalthang = valthanght - valthangsinh; 
+				/* Xet ngay hien tai */
+				if(valngayht < valngaysinh){
+					if(valthanght_old == "1" || valthanght_old == "3" || valthanght_old == "5" || valthanght_old == "7" || valthanght_old == "8" || valthanght_old == "10" || valthanght_old == "12"){
+						// debugger;
+						valngayht = valngayht + 31;
+						var ngay_tru = valngayht - valngaysinh;
+						valthanght = valthanght - 1;
+					}
+					else if(valthanght_old == "4" || valthanght_old == "6" || valthanght_old == "9" || valthanght_old == "11"){
+						// debugger;
+						valngayht = valngayht + 30;
+						var ngay_tru = valngayht - valngaysinh;
+						valthanght = valthanght - 1;
+					}
+					else if(valthanght_old == "2"){
+						// debugger;
+						if(get_nam_nhuan(valnamht) == true){
+							valngayht = valngayht + 29;
+							var ngay_tru = valngayht - valngaysinh;
+							valthanght = valthanght - 1;
+						}
+						else{
+							valngayht = valngayht + 28;
+							var ngay_tru = valngayht - valngaysinh;
+							valthanght = valthanght - 1;
+						}
+					}
+					/* tong so ngay */
+					if(get_nam_nhuan(valnamsinh) == true){
+						arr_thang_nam[1] = 29;
+						var $ngay_nam_sinh = 0;
+						for(var x = (valthangsinh - 1); x < 12; x++) {
+						    $ngay_nam_sinh += arr_thang_nam[x];
+						}
+					}
+					else if(get_nam_nhuan(valnamsinh) == false){
+						arr_thang_nam[1] = 28;
+						var $ngay_nam_sinh = 0;
+						for(var x = (valthangsinh - 1); x < 12; x++) {
+						    $ngay_nam_sinh += arr_thang_nam[x];
+						}
+					}
+					if(get_nam_nhuan(valnamht_old) == true){
+						arr_thang_nam[1] = 29;
+						var $ngay_nam_ht = 0;
+						for(var x = 0; x < (valthanght_old - 1); x++) {
+						    $ngay_nam_ht += arr_thang_nam[x];
+						}
+					}
+					else if(get_nam_nhuan(valnamht_old) == false){
+						arr_thang_nam[1] = 28;
+						var $ngay_nam_ht = 0;
+						for(var x = 0; x < (valthanght_old - 1); x++) {
+						    $ngay_nam_ht += arr_thang_nam[x];
+						}
+					}
+					for (var i = (valnamsinh + 1); i < valnamht_old; i++){
+						if(get_nam_nhuan(i) == true){
+							$songaycuanam = 366;
+							arr_ngay.push($songaycuanam);
+						}
+						else{
+							$songaycuanam = 365;
+							arr_ngay.push($songaycuanam);
+						}
+					}
+					var $tong_ngay = 0;
+					var $tong_ngay_sinh = parseFloat($ngay_nam_sinh) - parseFloat(valngaysinh_old);
+					var $tong_ngay_ht = parseFloat($ngay_nam_ht) + parseFloat(valngayht_old);
+					var totalngay = 0;
+					var len = arr_ngay.length;
+					for(var x = 0; x < len; x++) {
+					    totalngay += arr_ngay[x];
+					}
+					$tong_ngay = parseFloat(totalngay) + parseFloat($tong_ngay_sinh) + parseFloat($tong_ngay_ht);
+				}
+				else if(valngayht > valngaysinh || valngayht == valngaysinh){
+					var ngay_tru = valngayht - valngaysinh;
+					/* tong so ngay */
+					if(get_nam_nhuan(valnamsinh) == true){
+						arr_thang_nam[1] = 29;
+						var $ngay_nam_sinh = 0;
+						for(var x = (valthangsinh - 1); x < 12; x++) {
+						    $ngay_nam_sinh += arr_thang_nam[x];
+						}
+					}
+					else if(get_nam_nhuan(valnamsinh) == false){
+						arr_thang_nam[1] = 28;
+						var $ngay_nam_sinh = 0;
+						for(var x = (valthangsinh - 1); x < 12; x++) {
+						    $ngay_nam_sinh += arr_thang_nam[x];
+						}
+					}
+					if(get_nam_nhuan(valnamht_old) == true){
+						arr_thang_nam[1] = 29;
+						var $ngay_nam_ht = 0;
+						for(var x = 0; x < (valthanght_old - 1); x++) {
+						    $ngay_nam_ht += arr_thang_nam[x];
+						}
+					}
+					else if(get_nam_nhuan(valnamht_old) == false){
+						arr_thang_nam[1] = 28;
+						var $ngay_nam_ht = 0;
+						for(var x = 0; x < (valthanght_old - 1); x++) {
+						    $ngay_nam_ht += arr_thang_nam[x];
+						}
+					}
+					for (var i = (valnamsinh + 1); i < valnamht_old; i++){
+						if(get_nam_nhuan(i) == true){
+							$songaycuanam = 366;
+							arr_ngay.push($songaycuanam);
+						}
+						else{
+							$songaycuanam = 365;
+							arr_ngay.push($songaycuanam);
+						}
+					}
+					var $tong_ngay = 0;
+					var $tong_ngay_sinh = parseFloat($ngay_nam_sinh) - parseFloat(valngaysinh_old);
+					var $tong_ngay_ht = parseFloat($ngay_nam_ht) + parseFloat(valngayht_old);
+					var totalngay = 0;
+					var len = arr_ngay.length;
+					for(var x = 0; x < len; x++) {
+					    totalngay += arr_ngay[x];
+					}
+					$tong_ngay = parseFloat(totalngay) + parseFloat($tong_ngay_sinh) + parseFloat($tong_ngay_ht);
+				}
+				var thang_tru = valthanght - valthangsinh;
+				var nam_tru = valnamht - valnamsinh;
+				
+			}
+			else if(valthanght > valthangsinh || valthanght == valthangsinh){
+				// debugger;
+				var totalthang = valthanght - valthangsinh; 
+				var valngaysinh_old = valngaysinh;
+				var valngayht_old = valngayht;
+				if(valngayht < valngaysinh){
+					// valthanght = valthanght - 1;
+					if(valthanght == "1" || valthanght == "3" || valthanght == "5" || valthanght == "7" || valthanght == "8" || valthanght == "10" || valthanght == "12"){
+						// debugger;
+						valngayht = valngayht + 31;
+						var ngay_tru = valngayht - valngaysinh;
+						valthanght = valthanght - 1;
+					}
+					else if(valthanght == "4" || valthanght == "6" || valthanght == "9" || valthanght == "11"){
+						// debugger;
+						valngayht = valngayht + 30;
+						var ngay_tru = valngayht - valngaysinh;
+						valthanght = valthanght - 1;
+					}
+					else if(valthanght == "2"){
+						// debugger;
+						if(get_nam_nhuan(valnamht) == true){
+							valngayht = valngayht + 29;
+							var ngay_tru = valngayht - valngaysinh;
+							valthanght = valthanght - 1;
+						}
+						else{
+							valngayht = valngayht + 28;
+							var ngay_tru = valngayht - valngaysinh;
+							valthanght = valthanght - 1;
+						}
+					}
+					/* tong so ngay */
+					if(get_nam_nhuan(valnamsinh) == true){
+						arr_thang_nam[1] = 29;
+						var $ngay_nam_sinh = 0;
+						for(var x = (valthangsinh - 1); x < 12; x++) {
+						    $ngay_nam_sinh += arr_thang_nam[x];
+						}
+					}
+					else if(get_nam_nhuan(valnamsinh) == false){
+						arr_thang_nam[1] = 28;
+						var $ngay_nam_sinh = 0;
+						for(var x = (valthangsinh - 1); x < 12; x++) {
+						    $ngay_nam_sinh += arr_thang_nam[x];
+						}
+					}
+					if(get_nam_nhuan(valnamht) == true){
+						arr_thang_nam[1] = 29;
+						var $ngay_nam_ht = 0;
+						for(var x = 0; x < valthanght; x++) {
+						    $ngay_nam_ht += arr_thang_nam[x];
+						}
+					}
+					else if(get_nam_nhuan(valnamht) == false){
+						arr_thang_nam[1] = 28;
+						var $ngay_nam_ht = 0;
+						for(var x = 0; x < valthanght; x++) {
+						    $ngay_nam_ht += arr_thang_nam[x];
+						}
+					}
+					for (var i = (valnamsinh + 1); i < valnamht; i++){
+						if(get_nam_nhuan(i) == true){
+							$songaycuanam = 366;
+							arr_ngay.push($songaycuanam);
+						}
+						else{
+							$songaycuanam = 365;
+							arr_ngay.push($songaycuanam);
+						}
+					}
+					var $tong_ngay = 0;
+					var $tong_ngay_sinh = parseFloat($ngay_nam_sinh) - parseFloat(valngaysinh_old);
+					var $tong_ngay_ht = parseFloat($ngay_nam_ht) + parseFloat(valngayht_old);
+					var totalngay = 0;
+					var len = arr_ngay.length;
+					for(var x = 0; x < len; x++) {
+					    totalngay += arr_ngay[x];
+					}
+					$tong_ngay = parseFloat(totalngay) + parseFloat($tong_ngay_sinh) + parseFloat($tong_ngay_ht);
+				}
+				else if(valngayht > valngaysinh || valngayht == valngaysinh){
+					var ngay_tru = valngayht - valngaysinh;
+					/* tong so ngay */
+					if(get_nam_nhuan(valnamsinh) == true){
+						arr_thang_nam[1] = 29;
+						var $ngay_nam_sinh = 0;
+						for(var x = (valthangsinh - 1); x < 12; x++) {
+						    $ngay_nam_sinh += arr_thang_nam[x];
+						}
+					}
+					else if(get_nam_nhuan(valnamsinh) == false){
+						arr_thang_nam[1] = 28;
+						var $ngay_nam_sinh = 0;
+						for(var x = (valthangsinh - 1); x < 12; x++) {
+						    $ngay_nam_sinh += arr_thang_nam[x];
+						}
+					}
+					if(get_nam_nhuan(valnamht) == true){
+						arr_thang_nam[1] = 29;
+						var $ngay_nam_ht = 0;
+						for(var x = 0; x < (valthanght - 1); x++) {
+						    $ngay_nam_ht += arr_thang_nam[x];
+						}
+					}
+					else if(get_nam_nhuan(valnamht) == false){
+						arr_thang_nam[1] = 28;
+						var $ngay_nam_ht = 0;
+						for(var x = 0; x < (valthanght - 1); x++) {
+						    $ngay_nam_ht += arr_thang_nam[x];
+						}
+					}
+					for (var i = (valnamsinh + 1); i < valnamht; i++){
+						if(get_nam_nhuan(i) == true){
+							$songaycuanam = 366;
+							arr_ngay.push($songaycuanam);
+						}
+						else{
+							$songaycuanam = 365;
+							arr_ngay.push($songaycuanam);
+						}
+					}
+					var $tong_ngay = 0;
+					var $tong_ngay_sinh = parseFloat($ngay_nam_sinh) - parseFloat(valngaysinh_old);
+					var $tong_ngay_ht = parseFloat($ngay_nam_ht) + parseFloat(valngayht_old);
+					var totalngay = 0;
+					var len = arr_ngay.length;
+					for(var x = 0; x < len; x++) {
+					    totalngay += arr_ngay[x];
+					}
+					$tong_ngay = parseFloat(totalngay) + parseFloat($tong_ngay_sinh) + parseFloat($tong_ngay_ht);
+				}
+				var thang_tru = valthanght - valthangsinh;
+				var nam_tru = valnamht - valnamsinh;
+				
+			}
+			$tong_thang = (nam_tru * 12) + thang_tru;
+			$tong_tuan = Math.floor($tong_ngay / 7);
+			$ngay_du_tuan = $tong_ngay - ($tong_tuan * 7);
+			$gio = $tong_ngay * 24;
+			$phut = $gio * 60;
+			$giay = $phut *60;
+			console.log(nam_tru + " Năm " + thang_tru + " Tháng " + ngay_tru + " Ngày"  );
+			console.log($tong_thang + " Tháng và " + ngay_tru + " Ngày dư");
+			console.log($tong_tuan + " Tuần và " + $ngay_du_tuan + " Ngày dư");
+			console.log($tong_ngay + " Ngày");
+			console.log($gio + " Giờ");
+			console.log($phut + " Phút");
+			console.log($giay + " Giây");
+			// console.log("Tổng ngày bằng: " + $totalngay );
+		});
+		function get_nam_nhuan(so_nam){
+			if((so_nam % 400 == 0)||((so_nam % 4 == 0) && (so_nam % 100 != 0))){
+				return true
+				// alert('1');
+			}
+			else{
+				return false
+				// alert('2');
+			}
+		}
+		function xet_input_val(){
+			if((ngaysinh.value) > 31 || (thangsinh.value) > 12 || (namsinh.value) > (namht.value) || (ngayht.value) > 31 || (thanght.value) > 12){
+				alert('Ngày không được quá 31, tháng không được quá 12, năm sinh không được lớn hơn năm hiện tại !');
+				window.location.href = "tinh_tuoi.html";
+			}
+			if((thangsinh.value) === "2"){
+				if(((ngaysinh.value) > 28 && get_nam_nhuan(namsinh.value) == false) || ((ngayht.value) > 28 && get_nam_nhuan(namht.value) == false)){
+					alert('Tháng hai năm thường không được quá 28 ngày !');
+					window.location.href = "tinh_tuoi.html";
+				}
+				if(((ngaysinh.value) > 29 && get_nam_nhuan(namsinh.value) == true) || ((ngayht.value) > 29 && get_nam_nhuan(namht.value) == true)){
+					alert('Tháng hai năm nhuận không được quá 29 ngày !');
+					window.location.href = "tinh_tuoi.html";
+				}
+			}
+		}
+
+		function isNumber(evt) {
+		    evt = (evt) ? evt : window.event;
+		    var charCode = (evt.which) ? evt.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
+		}
+	</script>
+</html>

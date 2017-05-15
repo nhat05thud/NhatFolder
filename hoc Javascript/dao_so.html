@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Đảo số</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+	<input type="text" id="input" value="123456789">
+	<button id="button">click</button>
+</body>
+	<script>
+		document.getElementById("button").addEventListener("click",function(){
+			// debugger;
+			
+			var inputVal = input.value;
+
+			dao_so(inputVal);
+			dao_so1(inputVal);
+			// console.log(w);
+		});
+		function dao_so(inputVal){
+			var arr = [];
+			var array = [];
+			var len = inputVal.length;
+			var j = 0;
+			for (var i = 0; i < len; i++) {
+				j++;
+				var n = inputVal.slice(i,j);
+				arr.push(n);
+			}
+			for (var x = (len - 1); x >= 0 ; x--){
+				var c = arr[x];
+				array.push(c);
+			}
+			var $so = array.join("");
+			// console.log($so );
+			/**/
+			// var w = arr.reverse();
+			/**/
+			console.log(array);
+			console.log(parseFloat($so));
+		}
+		function dao_so1(inputVal){
+			// var arr = [];
+			// var output = Number((inputVal + '').split("").reverse().join(""));
+			inputVal = inputVal + '';
+			var output = inputVal.split('');;
+			// var output = Number(().split(""));
+				// arr.push(output);
+			console.log(arr);
+		}
+	</script>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Object - NameSpace - method of object</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+</body>
+	<script>
+		var Tranle = {};
+		Tranle.Javascript = {};
+		Tranle.Javascript.Math = {};
+		Tranle.Javascript.Math.Cong = function(input){
+			// debugger;
+				var inputVal = input + '';
+				var output = inputVal.split('');
+				var tongso = 0;
+				var len = output.length;
+				for(var x = 0; x < len; x++) {
+				    tongso += parseFloat(output[x]);
+				}
+				console.log(tongso);
+				return tongso;
+		}
+		Tranle.Javascript.Math.Tru = function(input){
+			// debugger;
+				var inputVal = input + '';
+				var output = inputVal.split('');
+				var tongso = 0;
+				var len = output.length;
+				for(var x = 0; x < len; x++) {
+				    tongso -= parseFloat(output[x]);
+				}
+				return tongso;
+		}
+		Tranle.Javascript.Math.Nhan = function(input){
+			// debugger;
+				var inputVal = input + '';
+				var output = inputVal.split('');
+				var tongso = 1;
+				var len = output.length;
+				for(var x = 1; x < len; x++) {
+				    tongso *= parseFloat(output[x]);
+				}
+				return tongso;
+		}
+		Tranle.Javascript.Math.Chia = function(input){
+			// debugger;
+				var inputVal = input + '';
+				var output = inputVal.split('');
+				var tongso = 1;
+				var len = output.length;
+				for(var x = 1; x < len; x++) {
+				    tongso /= parseFloat(output[x]);
+				}
+				return tongso;
+		}
+		// function isNumber(evt) {
+		//     evt = (evt) ? evt : window.event;
+		//     var charCode = (evt.which) ? evt.which : evt.keyCode;
+		//     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		//         return false;
+		//     }
+		//     return true;
+		// }
+	</script>
+<script>
+	console.log(Tranle.Javascript.Math.Chia(24556997452));
+</script>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Age</title>
+	<style>
+		.col span{
+			display: block;
+			margin-bottom: 0px;
+			font-weight: 900;
+			text-transform: uppercase;
+			text-decoration: underline;
+		}
+		input{
+			width: 220px;
+			height: 30px;
+			border: 1px solid #ccc;
+			padding: 0 10px;
+			margin-bottom: 15px;
+		}
+		label{
+			width: 100px;
+			display: inline-block;
+		}
+		#tinh{
+			background: #ccc;
+			height: 35px;
+			width: 200px;
+			border-radius: 7px;
+			text-align: center;
+			line-height: 35px;
+			cursor: pointer;
+		}
+		#warning{
+			color:red;
+		}
+	</style>
+</head>
+<body>
+	<div class="col">
+		<span>Năm sinh:</span> <br />
+		<label>Ngày:</label>
+		<input id="ngaysinh" type="text" placeholder="ngày sinh" onkeypress="return isNumber(event)" value="2"> <br />
+		<label>Tháng:</label>
+		<input id="thangsinh" type="text" placeholder="tháng sinh" onkeypress="return isNumber(event)" value="2"> <br />
+		<label>Năm:</label>
+		<input id="namsinh" type="text" placeholder="năm sinh" onkeypress="return isNumber(event)" value="2016"> <br />
+	</div>
+	<div class="col">
+		<span>hiện tại:</span> <br />
+		<label>Ngày:</label>
+		<input id="ngayht" type="text" placeholder="ngày hiện tại" onkeypress="return isNumber(event)" value="2"> <br />
+		<label>Tháng:</label>
+		<input id="thanght" type="text" placeholder="tháng hiện tại" onkeypress="return isNumber(event)" value="2"> <br />
+		<label>Năm:</label>
+		<input id="namht" type="text" placeholder="năm hiện tại" onkeypress="return isNumber(event)" value="2047"> <br />
+	</div>
+	<p id="warning"></p>
+	<p id="tinh">Tính</p>
+</body>
+	<script>
+		var ngaysinh = document.getElementById('ngaysinh');
+		var thangsinh = document.getElementById('thangsinh');
+		var namsinh = document.getElementById('namsinh');
+		var ngayht = document.getElementById('ngayht');
+		var thanght = document.getElementById('thanght');
+		var namht = document.getElementById('namht');
+		// get_nam_nhuan('2016');
+
+
+		document.getElementById('tinh').addEventListener("click",function(){
+			xet_input_val();
+			// var $old = thangsinh.value + "-" + ngaysinh.value + "-" + namsinh.value;
+			// var $new = thanght.value + "-" + ngayht.value + "-" + namht.value;
+			// var dateold = new Date($old);
+			// var datenew = new Date($new);
+			// debugger;
+			// console.log(dateold)
+
+			var valngaysinh = ngaysinh.value;
+			var valngayht = ngayht.value;
+			var arrngay = [];
+
+			var valthangsinh = thangsinh.value;
+			var valthanght = thanght.value;
+			var arrthang = [];
+
+			var valnamsinh = namsinh.value;
+			var valnamht = namht.value;
+			var arrnam = [];
+
+			var $songaycuanam = 0;
+			var $thanghai = 0;
+			var arr_thang_nam = [31,0,31,30,31,30,31,31,30,31,30,31];
+			if(valthanght < valthangsinh){
+				valnamht--; // xem lai phan nay
+				valthanght = valthanght + 12;
+				for (var i = valnamsinh/* 2016 */; i <= valnamht /* 2047 */; i++) {
+					if(get_nam_nhuan(i) == true){
+						$songaycuanam = 366;
+						arrnam.push($songaycuanam);
+						$thanghai = 29;
+					}
+					else{
+						$songaycuanam = 365;
+						arrnam.push($songaycuanam);
+						$thanghai = 28;
+					}
+				}
+			}
+			else{
+				for (var i = valnamsinh/* 2016 */; i <= valnamht /* 2047 */; i++) {
+					if(get_nam_nhuan(i) == true){
+						$songaycuanam = 366;
+						arrnam.push($songaycuanam);
+						$thanghai = 29;
+					}
+					else{
+						$songaycuanam = 365;
+						arrnam.push($songaycuanam);
+						$thanghai = 28;
+					}
+				}
+			}
+			/**/
+
+
+
+
+			// so nam;
+			
+			var totalnam = 0;
+			var len = arrnam.length
+			for(var x = 0; x < len; x++) {
+			    totalnam += arrnam[x];  // Iterate over your first array and then grab the second element add the values up
+			}
+			console.log(arrnam, totalnam);
+			/**/
+			
+
+
+		})
+		function get_nam_nhuan(so_nam){
+			if((so_nam % 400 == 0)||(so_nam % 4 == 0 && so_nam % 100 != 0)){
+				return true
+				// alert('1');
+			}
+			else{
+				return false
+				// alert('2');
+			}
+		}
+		function xet_input_val(){
+			if((ngaysinh.value) > 31 || (thangsinh.value) > 12 || (namsinh.value) > (namht.value) || (ngayht.value) > 31 || (thanght.value) > 12){
+				document.getElementById("warning").innerHTML = "Ngày không được quá 31, tháng không được quá 12, năm sinh không được lớn hơn năm hiện tại !";
+			}
+			if((thangsinh.value) === "2"){
+				if(((ngaysinh.value) > 28 && get_nam_nhuan(namsinh.value) == false) || ((ngayht.value) > 28 && get_nam_nhuan(namht.value) == false)){
+					document.getElementById("warning").innerHTML = "Tháng hai năm thường không được quá 28 ngày !";
+				}
+				if(((ngaysinh.value) > 29 && get_nam_nhuan(namsinh.value) == true) || ((ngayht.value) > 29 && get_nam_nhuan(namht.value) == true)){
+					document.getElementById("warning").innerHTML = "Tháng hai năm nhuận không được quá 29 ngày !";
+				}
+			}
+		}
+
+		function isNumber(evt) {
+		    evt = (evt) ? evt : window.event;
+		    var charCode = (evt.which) ? evt.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
+		}
+	</script>
+</html>
